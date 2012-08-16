@@ -1,0 +1,1 @@
+﻿#target indesignapp.activeDocument.distribute(app.selection, DistributeOptions.VERTICAL_SPACE, AlignDistributeBounds.ITEM_BOUNDS);

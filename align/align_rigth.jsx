@@ -1,0 +1,1 @@
+﻿#target indesignapp.activeDocument.align(app.selection, AlignOptions.RIGHT_EDGES, AlignDistributeBounds.ITEM_BOUNDS);
