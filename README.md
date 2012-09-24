@@ -1,4 +1,0 @@
-javascript
-==========
-
-Indesign Javascript code
