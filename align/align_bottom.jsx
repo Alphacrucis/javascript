@@ -1,1 +1,1 @@
-﻿#target indesignapp.activeDocument.align(app.selection, AlignOptions.BOTTOM_EDGES, AlignDistributeBounds.ITEM_BOUNDS);
+#target indesignif (app.selection && app.selection.length > 0)    app.activeDocument.align(app.selection,                              AlignOptions.BOTTOM_EDGES,                              AlignDistributeBounds.ITEM_BOUNDS);

@@ -1,1 +1,1 @@
-﻿#target indesignapp.activeDocument.distribute(app.selection, DistributeOptions.HORIZONTAL_SPACE, AlignDistributeBounds.ITEM_BOUNDS);
+#target indesignif (app.selection && app.selection.length > 0)    app.activeDocument.distribute(app.selection,                                   DistributeOptions.HORIZONTAL_SPACE,                                   AlignDistributeBounds.ITEM_BOUNDS);
