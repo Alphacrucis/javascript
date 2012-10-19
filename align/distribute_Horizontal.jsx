@@ -1,1 +1,1 @@
-#target indesignif (app.selection && app.selection.length > 0)    app.activeDocument.distribute(app.selection,                                   DistributeOptions.HORIZONTAL_SPACE,                                   AlignDistributeBounds.ITEM_BOUNDS);
+﻿#target indesign#include "align.jsx"distribute(app.activeDocument, app.selection, DistributeOptions.HORIZONTAL_SPACE);

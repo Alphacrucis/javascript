@@ -1,1 +1,1 @@
-#target indesignif (app.selection && app.selection.length > 0)    app.activeDocument.align(app.selection,                              AlignOptions.HORIZONTAL_CENTERS,                              AlignDistributeBounds.ITEM_BOUNDS);
+﻿#target indesign#include "align.jsx"align(app.activeDocument, app.selection, AlignOptions.HORIZONTAL_CENTERS);

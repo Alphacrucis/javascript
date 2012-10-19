@@ -1,1 +1,1 @@
-#target indesignif (app.selection && app.selection.length > 0)    app.activeDocument.align(app.selection, AlignOptions.RIGHT_EDGES, AlignDistributeBounds.ITEM_BOUNDS);
+﻿#target indesign#include "align.jsx"align(app.activeDocument, app.selection, AlignOptions.RIGHT_EDGES);
