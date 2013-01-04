@@ -1,1 +1,1 @@
-﻿#target "indesign"var myid = prompt('Indicar el Id de objeto:', '');if (myid){    app.select(app.activeWindow.activePage.pageItems.itemByID(parseInt(myid)));    app.activeWindow.zoom(ZoomOptions.FIT_PAGE);}
+#target "indesign"var myid = prompt('Indicar el Id de objeto:', '');if (myid){    var obj = app.activeWindow.activePage.pageItems.itemByID(parseInt(myid));    app.select(obj);    app.activeWindow.zoom(ZoomOptions.FIT_PAGE);}
