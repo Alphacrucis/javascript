@@ -1,0 +1,1 @@
+﻿// Generic algoritms// Repeats an action 'fun' n timesfunction repeat_(n, fun) { for (var i=0; i<n; ++i) fun(i); }

@@ -1,0 +1,1 @@
+function compareFloat(a, b, epsilon){    epsilon = !epsilon ? 0.0001 : epsilon;        return Math.abs(a-b) < epsilon;}
