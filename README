@@ -1,1 +1,23 @@
-Scripts para indesign---------------------Colección de scripts para indesign
+Scripts para indesign
+---------------------
+
+Colección de scripts para indesign
+
+IKEA ---------> Scripts relacionados con los catálogos IKEA
+
+_scripts -----> Scripts auxiliares utilizadas por el resto de scripts
+
+align --------> Scripts para alinear objetos en indesign
+
+assist -------> Scripts útiles en indesign
+
+exportar -----> Scripts para realizar exportación desde Indesign
+                Incluye scripts para convertir un equipo en 
+                servidor de exportación
+
+lib ----------> scripts auxiliares. Pendiente de unir a _scripts.
+
+personalizar -> Scripts para personalizar documentos (generar
+                múltiples documentos con mismo formato y distintos datos)
+
+util ---------> Varios scripts de utilidad genérica
