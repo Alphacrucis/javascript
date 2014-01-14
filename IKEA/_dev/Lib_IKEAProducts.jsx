@@ -11,7 +11,8 @@
 
 #include "~/_scripts/frameworks/Extendables/extendables.jsx"
 
-var IKEA = IKEA || (function(){
+//var IKEA = IKEA || (function(){
+var IKEA = (function(){
     const IKEA_URL = "http://ibiza.ikea.es/esi/es/catalog/products/";
     
     var nullify = function(v){ 
@@ -132,12 +133,51 @@ var IKEA = IKEA || (function(){
            { name: 'color'       , text: 'Color'        },
            { name: 'large_code'  , text: 'Código'       },
            { name: 'sort_code'   , text: 'Código Corto' }
+/*           
+           { name: 'partNumber'        , text:'' },
+           { name: 'almcod'            , text:'' },
+           { name: 'formatNumber'      , text:'' },
+           { name: 'dataPrint'         , text:'' }, 
+           { name: 'facts'             , text:'' }, 
+           { name: 'color'             , text:'' }, 
+           { name: 'size'              , text:'' }, 
+           { name: 'environment'       , text:'' },
+           { name: 'island'            , text:'' },
+           { name: 'itemquantity'      , text:'' },
+           { name: 'image'             , text:'' },
+           { name: 'assembly'          , text:'' },
+           { name: 'priceNormal'       , text:'' },
+           { name: 'priceSale'         , text:'' },
+           { name: 'priceOriginal'     , text:'' },
+           { name: 'currency'          , text:'' },
+           { name: 'package'           , text:'' },
+           { name: 'designer'          , text:'' },
+           { name: 'area'              , text:'' },
+           { name: 'quantity'          , text:'' },
+           { name: 'custMaterials'     , text:'' },
+           { name: 'goodToKnow'        , text:'' },
+           { name: 'measure'           , text:'' },
+           { name: 'Numero de asientos', text:'' },
+           { name: 'pkgmeas'           , text:'' },
+           { name: 'careInst'          , text:'' },
+           { name: 'custBenefit'       , text:'' },
+           { name: 'subitemQuantity'   , text:'' },
+           { name: 'subitems'          , text:'' },
+*/           
         ],
         
-        PS_ARTICULO: { fontName: 'Verdana IKEA', pointSize: 7.25, fontStyle: 'Normal', tracking:-40, kerningValue: 9.5 },
-        
         RE_LARGECODE: /\d\d\d\.\d\d\d\.\d\d/mg,
-                   
+
+        /** Cachea el símbolo de monea o devuelve el
+            último valor cacheado */
+        cached_price_symbol: undefined,
+        price_symbol: function(ps) {
+            if (!!ps) {
+                this.cached_price_symbol = ps;
+            } else
+                return this.cached_price_symbol;
+        },
+
         IKEAProduct: function(partNumber, island, date){
             var self = this;
             var pinfo, pn, product;
@@ -148,9 +188,7 @@ var IKEA = IKEA || (function(){
             pinfo = getProductInfoJSON(pn, island, date);
             
             if (nullify(pinfo)) {
-                var error = new ValidationError();
-                error.message = 'No se han encontrado datos para la referencia "{}".'.format(partNumber);
-                throw error;
+                throw build_error(ValidationError, 'No se han encontrado datos para la referencia "{}".'.format(partNumber));
             }
             
             $.writeln(pinfo);
@@ -180,7 +218,14 @@ var IKEA = IKEA || (function(){
                         return v.replace(cutText, '').trim().replace(/,$/,''); 
                     }
                 
-                    return v.trim();
+                    if (v.has('trim')){
+                        v = v.trim();
+                    } 
+                    if (v.is(Array)) {
+                        v = v.join('. ');
+                    }
+                
+                    return v;
                 },
             
                 set: function(field, value) { this.attributes[field] = value; return this; },
@@ -267,6 +312,16 @@ var IKEA = IKEA || (function(){
             leaf.forEach(function(el) { el.remove(); });
         },
     
+        stringifyObject: function(obj, sep) {
+            var serialize = [];
+            for (key in obj) {
+                if (!obj[key].is(Function)){
+                    serialize.push(obj[key]);
+                }
+            }
+            return serialize.join(sep || '. ');
+        },
+    
         productToXML: function(product, doc, dest){
             var code, data, elem, attr;
             
@@ -279,36 +334,15 @@ var IKEA = IKEA || (function(){
             IKEA.removeXMLElementsByAttr('partNumber', code);
             
             // insert new xmlElement in document root
-            data = product.fields(['name', 'description', 'price', 'size', 'color', 'large_code']);
+            data = product.fields(['name', 'description', 'price', 'custMaterials', 'size', 'color', 'large_code']);
+            data.custMaterials = this.stringifyObject(data.custMaterials);
             elem = IKEA.addXMLElement(IKEA.xmlRoot(doc), "Article", data, dest);
             elem.xmlAttributes.add('partNumber', code);
             elem.xmlAttributes.add('timeStamp', Date(Date.now()));
             
             return elem;
         },
-    
-        paragraphStyle: function(name, defaultDef, doc_){
-            var doc, styles, new_style;
-            doc = (doc_ === undefined) ? (app.documents.length === 0 ? app : app.activeDocument) : doc_;
-            
-            styles = doc.paragraphStyles.everyItem().name;
-            if (styles.some(function(e){ return e === name; })){
-                return doc.paragraphStyles.item(name);
-            }
-        
-            if (defaultDef === undefined){
-                throw build_error(ValidationError, 'No existe el estilo de párrafo ' + name);
-            }
-        
-            new_style = doc.paragraphStyles.add({ name: name, 
-                                                  appliedFont: defaultDef.fontName || 'Verdana IKEA',
-                                                  fontStyle: defaultDef.fontStyle || 'Normal', 
-                                                  pointSize: defaultDef.pointSize || 9,
-                                                  tracking: defaultDef.tracking || 0,
-                                                  kerningValue: defaultDef.kerningValue || 11.1 });
-            return new_style;
-        },
-    
+       
         getTextFrame: function(sel){
             if (!sel) {
                 return undefined;

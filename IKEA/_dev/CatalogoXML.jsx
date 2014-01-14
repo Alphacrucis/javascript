@@ -1,7 +1,7 @@
 ﻿/** IKEA Catalogo XML
     Author: Javier Ramos
     
-    Dependencies: extentables, Lib_IKEAProducts, indesign
+    Dependencies: extentables, Lib_IKEAProducts, Lib_IKEA_Styles, indesign
     */
 
 #target "indesign"
@@ -18,6 +18,9 @@ var ui = require("ui");
 // * --------------------------------------------------------------------------------------------------------
 
 function main() {
+    // current document sanity checks
+	IKEA.Styles.createDefaultStyles();
+
     ui_mainForm();
 //    process_all_textframes(app.activeDocument, IKEA.TENERIFE);
 }
@@ -100,7 +103,7 @@ function ui_mainForm(){
 // * --------------------------------------------------------------------------------------------------------
 
 function process_codes(codes, tframe, origen){
-    var doc, first, price_symbol;
+    var doc, first;
 
     doc = tframe ? document(tframe) : app.activeDocument;
     tframe = IKEA.getTextFrame(tframe ? tframe : app.selection.first());
@@ -130,22 +133,20 @@ function process_codes(codes, tframe, origen){
                 return ;
             }
         
-            if (!price_symbol) {
-                price_symbol = Product.get('currency');
-            }
+            IKEA.price_symbol(Product.get('currency'));
         
             nparag = tframe.paragraphs.length
             dst =  nparag > 0 ? tframe.paragraphs.item(nparag-1) : tframe;
             elem = IKEA.productToXML(Product, doc, dst);
         }
         catch(e) { 
+            app.scriptPreferences.enableRedraw = true;
             if (elem) elem.remove()
             $.writeln(e.message);
             alert(e.message); 
+            return ;
         }
     });
-
-    alert(IKEA.Styles.name);
     
     IKEA.Styles.applyStyles(tframe.associatedXMLElement)
     
@@ -205,4 +206,4 @@ function process_all_textframes(doc, origin){
     }
 }
 
-main();
+app.doScript(main, ScriptLanguage.JAVASCRIPT, null, UndoModes.ENTIRE_SCRIPT, 'XML Tag');
