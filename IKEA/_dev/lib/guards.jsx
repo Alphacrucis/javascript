@@ -1,0 +1,1 @@
+﻿var guard = function(expected_type) {     return function(value) {        if (typeof(value) !== expected_type) {            throw TypeError(expected_type + " Expected!, but got a " + typeof(value));        }        return value;    };};var g_str = guard('string');var g_num = guard('number');var g_bool = guard('boolean');var g_func = guard('function');
