@@ -1,1 +1,1 @@
-﻿#include "frameworks/Extendables/extendables.jsx"#include "functools.jsx"#include "indesign.jsx"#include "IKEAProducts.jsx"#include "IKEAConfig.jsx"#include "IKEAStyles.jsx"#include "IKEA_XML.jsx"#include "lib_curl.jsx"
+﻿#include "frameworks/Extendables/extendables.jsx"#include "errors.jsx"#include "guards.jsx"#include "functools.jsx"#include "indesign.jsx"#include "ui_progressbar.jsx"#include "IKEAProducts.jsx"#include "IKEAConfig.jsx"#include "IKEAStyles.jsx"#include "IKEAXML.jsx"#include "lib_curl.jsx"
